@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 function App() {
   const classes = useStyles();
-  const { addWorkshop, removeWorkshop, workshops, addTraveler, removeTraveler, travelers, schedule } = useDatastore();
+  const { addWorkshop, removeWorkshop, workshops, addTraveler, removeTraveler, travelers } = useDatastore();
 
   return (
     <Grid className={`App ${classes.root}`} container spacing={3}>
@@ -40,7 +40,9 @@ function App() {
       </Grid>
 
       <Grid item xs={6} className={classes.pane}>
-        <ScheduleView schedule={schedule} />
+        <ScheduleView 
+          travelers={travelers}
+          workshops={workshops} />
       </Grid>
 
     </Grid>

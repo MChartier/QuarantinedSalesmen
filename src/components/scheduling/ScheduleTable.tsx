@@ -10,6 +10,9 @@ const useStyles = makeStyles(() => ({
   },
   header: {
     fontWeight: 'bold'
+  },
+  table: {
+    height: '100%'
   }
 }));
 
@@ -21,29 +24,34 @@ export type ScheduleTableProps = {
 export default function ScheduleTable(props: ScheduleTableProps) {
   const classes = useStyles();
 
-  if (props.schedule === null || props.schedule.assignments.length === 0) {
-    return (
-      <Typography>Schedule is empty!</Typography>
-    );
-  }
-
+  let hasSchedule = props.schedule !== null && props.schedule.assignments.length > 0;
   return (
-    <TableContainer className={`${props.className} {classes.root}`}>
-      <Table>
+    <div className={`${props.className} {classes.root}`}>
+      {!hasSchedule &&
+        <Typography>Schedule is empty!</Typography>
+      }
+      {hasSchedule && 
+        <TableContainer className={classes.table}>
+          <Table>
+            <TableRow className={classes.header}>
+              <TableCell className={classes.header}>Workshop</TableCell>
+              <TableCell className={classes.header}>Traveler</TableCell>
+              <TableCell className={classes.header}>State</TableCell>
+              <TableCell className={classes.header}>Begin Date</TableCell>
+              <TableCell className={classes.header}>End Date</TableCell>
+            </TableRow>
 
-        <TableRow className={classes.header}>
-          <TableCell className={classes.header}>Workshop</TableCell>
-          <TableCell className={classes.header}>Traveler</TableCell>
-          <TableCell className={classes.header}>State</TableCell>
-          <TableCell className={classes.header}>Begin Date</TableCell>
-          <TableCell className={classes.header}>End Date</TableCell>
-        </TableRow>
-
-        {
-          props.schedule.assignments.map(assignment => 
-            <AssignmentTableRow assignment={assignment} />)
-        }
-      </Table>
-    </TableContainer>
+            {
+              props.schedule && 
+                props.schedule.assignments.map(assignment => 
+                  <AssignmentTableRow assignment={assignment} />)
+            }
+          </Table>
+        </TableContainer>
+      }
+      
+    </div>
+    
+    
   )
 }

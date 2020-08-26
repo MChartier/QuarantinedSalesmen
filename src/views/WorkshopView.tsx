@@ -14,7 +14,8 @@ const useStyles = makeStyles(() => ({
   },
   list: {
     flexGrow: 1,
-    flexShrink: 1
+    flexShrink: 1,
+    minHeight: 0
   }
 }));
 

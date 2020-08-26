@@ -14,7 +14,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     height: '100%'
   },
   list: {
-    flexGrow: 1
+    flexGrow: 1,
+    flexShrink: 1,
+    minHeight: 0
   }
 }));
 

@@ -1,4 +1,4 @@
 export default interface SchedulerOptions {
-  FieldCoordinatorsPerWorkshopw: number;
+  FieldCoordinatorsPerWorkshop: number;
   PresentersPerWorkshop: number;
 }

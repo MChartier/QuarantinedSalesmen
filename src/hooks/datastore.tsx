@@ -66,17 +66,15 @@ export const DatastoreProvider = ({
     if (!isInitialized) {
       // Initialize test data
       // TODO: Remove
-      console.log('Running...');
-      addTraveler('Loki', State.WA, TravelerType.FieldCoordinator);
-      addTraveler('Ducky', State.WA, TravelerType.Presenter);
-      addTraveler('Nutmeg', State.NY, TravelerType.FieldCoordinator);
+      addTraveler('Loki', 'WA' as State, 'FieldCoordinator' as TravelerType);
+      addTraveler('Ducky', 'WA' as State, 'Presenter' as TravelerType);
+      addTraveler('Nutmeg', 'WA' as State, 'FieldCoordinator' as TravelerType);
     
       let today = new Date();
       let tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
-      addWorkshop('Catalina Wine Mixer', State.CA, today, tomorrow);
-      addWorkshop('The Big Show', State.CA, today, tomorrow);
-      console.log('Ran.');
+      addWorkshop('Catalina Wine Mixer', 'CA' as State, today, tomorrow);
+      addWorkshop('The Big Show', 'CA' as State, today, tomorrow);
       setIsInitialized(true);
     }
     

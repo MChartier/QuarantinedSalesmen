@@ -11,6 +11,19 @@ export class Scheduler {
   }
 
   public Schedule(travelers: Traveler[], workshops: Workshop[]): Schedule {
-    return {} as Schedule;
+    let schedule: Schedule = {
+      assignments: [] 
+    };
+
+    for (let workshop of workshops) {
+      for (let traveler of travelers) {
+        schedule.assignments.push({
+          traveler,
+          workshop
+        });
+      }
+    }
+
+    return schedule;
   }
 }
