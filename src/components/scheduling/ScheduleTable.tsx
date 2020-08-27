@@ -35,7 +35,7 @@ export default function ScheduleTable(props: ScheduleTableProps) {
           <Table>
             <TableRow className={classes.header}>
               <TableCell className={classes.header}>Workshop</TableCell>
-              <TableCell className={classes.header}>Traveler</TableCell>
+              <TableCell className={classes.header}>Travelers</TableCell>
               <TableCell className={classes.header}>State</TableCell>
               <TableCell className={classes.header}>Begin Date</TableCell>
               <TableCell className={classes.header}>End Date</TableCell>

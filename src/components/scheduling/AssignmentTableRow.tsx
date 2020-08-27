@@ -19,7 +19,7 @@ export default function AssignmentTableRow(props: AssignmentTableRowProps) {
   return (
     <TableRow className={classes.root}>
       <TableCell>{props.assignment.workshop.name}</TableCell>
-      <TableCell>{props.assignment.traveler.name}</TableCell>
+      <TableCell>{props.assignment.travelers.map(x => x.name).join(', ')}</TableCell>
       <TableCell>{getStateName(props.assignment.workshop.state)}</TableCell>
       <TableCell>{props.assignment.workshop.beginDate.toDateString()}</TableCell>
       <TableCell>{props.assignment.workshop.endDate.toDateString()}</TableCell>
