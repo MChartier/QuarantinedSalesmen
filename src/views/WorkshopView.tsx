@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export type WorkshopViewProps = {
-  addWorkshop: (name: string, state: State, beginDate: Date, endDate: Date) => void;
+  addWorkshop: (name: string, state: State, startDate: Date, endDate: Date) => void;
   removeWorkshop: (id: string) => void;
   workshops: Workshop[];
 }

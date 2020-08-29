@@ -5,7 +5,6 @@ import Schedule from '../models/scheduling/Schedule';
 import { TravelerType } from '../models/travelers/TravelerType';
 import { State } from '../models/rules/State';
 import { getRestrictedStates } from '../models/rules/StateRules';
-import { stringify } from 'querystring';
 import Assignment from '../models/scheduling/Assignment';
 
 interface TravelerMetadata {
@@ -25,7 +24,7 @@ export class Scheduler {
     let presenters = travelers.filter(x => x.type === TravelerType.Presenter);
 
     // Order workshops by start date
-    let orderedWorkshops = workshops.sort((x, y) => x.beginDate.getTime() - y.beginDate.getTime());
+    let orderedWorkshops = workshops.sort((x, y) => x.timeInterval.startDate < y.timeInterval.startDate ? -1 : 1);
 
     return this.combineSchedules([
       this.schedule(fieldCoordinators, orderedWorkshops, this.options.FieldCoordinatorsPerWorkshop),
@@ -53,12 +52,13 @@ export class Scheduler {
 
     let assignments = Array.from(assignmentsByWorkshop.values());
     return {
-      assignments: assignments.sort((x, y) => x.workshop.beginDate.getTime() - y.workshop.beginDate.getTime())
+      assignments: assignments.sort((x, y) => 
+        x.workshop.timeInterval.startDate < y.workshop.timeInterval.startDate ? -1 : 1)
     };
   }
 
   private isAvailable(travelerMetadata: TravelerMetadata, workshop: Workshop): boolean {
-    return travelerMetadata.nextAvailableDate <= workshop.beginDate;
+    return travelerMetadata.nextAvailableDate <= workshop.timeInterval.startDate;
   }
 
   private isRestricted(travelerMetadata: TravelerMetadata, workshop: Workshop): boolean {
@@ -66,7 +66,8 @@ export class Scheduler {
     
     for (let i in restrictedStates) {
       if (travelerMetadata.lastVisitedMap.has(restrictedStates[i]) &&
-        (travelerMetadata.lastVisitedMap.get(restrictedStates[i]) as Date).getDate() > workshop.beginDate.getDate() - 14) {
+        (travelerMetadata.lastVisitedMap.get(restrictedStates[i]) as Date).getDate() > 
+          workshop.timeInterval.startDate.getDate() - 14) {
         return true;
       }
     }
@@ -125,9 +126,9 @@ export class Scheduler {
         });
 
         
-        travelerMetadata.lastVisitedMap.set(workshop.state, workshop.endDate);
+        travelerMetadata.lastVisitedMap.set(workshop.state, workshop.timeInterval.endDate);
         let nextAvailableDate = new Date();
-        nextAvailableDate.setDate(workshop.endDate.getDate() + 1);
+        nextAvailableDate.setDate(workshop.timeInterval.endDate.getDate() + 1);
         travelerMetadata.nextAvailableDate = nextAvailableDate;
         scheduledAttendees++;
       }

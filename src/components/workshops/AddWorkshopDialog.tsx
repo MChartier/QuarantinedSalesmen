@@ -3,7 +3,6 @@ import { makeStyles, Dialog, DialogTitle, DialogContent, DialogContentText, Text
 import { State } from '../../models/rules/State';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -18,7 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 export type AddWorkshopDialogProps = {
-  addWorkshop: (name: string, home: State, beginDate: Date, endDate: Date) => void;
+  addWorkshop: (name: string, home: State, startDate: Date, endDate: Date) => void;
   open: boolean;
   setOpen: (isOpen: boolean) => void;
 }
@@ -28,7 +27,7 @@ export default function AddWorkshopDialog(props: AddWorkshopDialogProps) {
 
   const [name, setName] = useState<string>('');
   const [state, setState] = useState<State>(State.NY);
-  const [beginDate, setBeginDate] = useState<Date|null>(null);
+  const [startDate, setStartDate] = useState<Date|null>(null);
   const [endDate, setEndDate] = useState<Date|null>(null);
 
   const handleClose = useCallback(() => {
@@ -41,21 +40,21 @@ export default function AddWorkshopDialog(props: AddWorkshopDialogProps) {
       return;
     }
 
-    if (beginDate === null || endDate === null) {
-      alert('Must supply begin and end date');
+    if (startDate === null || endDate === null) {
+      alert('Must supply start and end date');
       return;
     }
 
-    if (beginDate > endDate) {
-      alert('endDate must be after beginDate!');
+    if (startDate > endDate) {
+      alert('endDate must be after startDate!');
       return;
     }
 
-    props.addWorkshop(name, state, beginDate, endDate);
+    props.addWorkshop(name, state, startDate, endDate);
     props.setOpen(false);
     setName('');
     setState(State.NY);
-  }, [beginDate, endDate, name, props, state]);
+  }, [endDate, name, props, startDate, state]);
 
   return (
     <Dialog 
@@ -110,16 +109,30 @@ export default function AddWorkshopDialog(props: AddWorkshopDialogProps) {
             format="MM/dd/yyyy"
             margin="normal"
             id="date-picker-inline"
-            label="Begin Date"
-            value={beginDate}
-            onChange={(date) => setBeginDate(date)}
+            label="Start Date"
+            value={startDate}
+            onChange={(date) => {
+              if (!date) {
+                return;
+              }
+
+              let dayOfWeek = date.getDay();
+              let monday = new Date(date);
+              monday.setDate(date.getDate() - dayOfWeek + 1);
+
+              let friday = new Date(date);
+              friday.setDate(date.getDate() - dayOfWeek + 5);
+
+              setStartDate(monday);
+              setEndDate(friday);
+            }}
             KeyboardButtonProps={{
               'aria-label': 'change date',
             }}
             required
           />
 
-          <KeyboardDatePicker
+          {/* <KeyboardDatePicker
             disableToolbar
             variant="inline"
             format="MM/dd/yyyy"
@@ -127,12 +140,15 @@ export default function AddWorkshopDialog(props: AddWorkshopDialogProps) {
             id="date-picker-inline"
             label="End Date"
             value={endDate}
-            onChange={(date) => setEndDate(date)}
+            onChange={(date) => {
+              date?.getDay()
+              setEndDate(date)
+            }}
             KeyboardButtonProps={{
               'aria-label': 'change date',
             }}
             required
-          />
+          /> */}
         </MuiPickersUtilsProvider>
       </DialogContent>
       <DialogActions>

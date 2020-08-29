@@ -6,8 +6,6 @@ import WorkshopListItem from './WorkshopListItem';
 
 const useStyles = makeStyles(() => ({
   root: {
-    maxHeight: '100%',
-    overflow: 'auto'
   },
 }));
 

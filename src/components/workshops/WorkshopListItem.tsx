@@ -28,7 +28,8 @@ export default function WorkshopListItem(props: WorkshopListItemProps) {
         secondary={
           <>
             <Typography variant="body2" color="textPrimary">
-              {`${props.workshop.beginDate.toDateString()} - ${props.workshop.endDate.toDateString()}`}
+              {`${props.workshop.timeInterval.startDate.toDateString()} - ` +
+                props.workshop.timeInterval.endDate.toDateString()}
             </Typography>
             <Typography variant="body2" color="textPrimary">
               {getStateName(props.workshop.state)}

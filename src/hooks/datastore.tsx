@@ -8,7 +8,7 @@ import { GenerateGuid } from '../services/GuidGenerator';
 
 export interface DatastoreInterface {
   addTraveler: (name: string, home: State, type: TravelerType) => void;
-  addWorkshop: (name: string, state: State, beginDate: Date, endDate: Date) => void;
+  addWorkshop: (name: string, state: State, startDate: Date, endDate: Date) => void;
   removeTraveler: (id: string) => void;
   removeWorkshop: (id: string) => void;
   schedule: Schedule|null;
@@ -39,13 +39,15 @@ export const DatastoreProvider = ({
     setTravelers([...travelers]);
   }, [travelers]);
 
-  const addWorkshop = useCallback((name: string, state: State, beginDate: Date, endDate: Date): void => {
+  const addWorkshop = useCallback((name: string, state: State, startDate: Date, endDate: Date): void => {
     workshops.push({
-      beginDate,
-      endDate,
       id: GenerateGuid(),
       name,
       state,
+      timeInterval: {
+        startDate,
+        endDate
+      }
     });
     setWorkshops([...workshops]);
   }, [workshops]);

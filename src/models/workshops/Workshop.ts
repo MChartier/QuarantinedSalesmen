@@ -1,9 +1,9 @@
 import { State } from "../rules/State";
+import TimeInterval from "../scheduling/TimeInterval";
 
 export default interface Workshop {
-  beginDate: Date;
-  endDate: Date;
   id: string;
   name: string;
   state: State;
+  timeInterval: TimeInterval;
 }
